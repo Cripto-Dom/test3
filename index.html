@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Підключення MetaMask</title>
+<style>
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #282c34;
+  }
+  .container {
+    text-align: center;
+    color: white;
+  }
+  .button {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    padding: 10px 20px;
+    margin-top: 20px;
+    border-radius: 5px;
+    backdrop-filter: blur(5px);
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  .button:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+  #walletAddress {
+    margin-top: 20px;
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <h1>Підключіть ваш MetaMask</h1>
+    <button id="connectButton" class="button">Підключити</button>
+    <div id="walletAddress"></div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/ethers@5.2.0/dist/ethers.min.js"></script>
+  <script>
+    const connectButton = document.getElementById('connectButton');
+    const walletAddressDiv = document.getElementById('walletAddress');
+
+    connectButton.addEventListener('click', () => {
+      if (typeof window.ethereum !== 'undefined') {
+        window.ethereum.request({ method: 'eth_requestAccounts' })
+          .then(accounts => {
+            walletAddressDiv.textContent = Адреса гаманця: ${accounts[0]};
+          })
+          .catch(err => {
+            console.error('Помилка:', err);
+            walletAddressDiv.textContent = 'Виникла помилка при підключенні до MetaMask.';
+          });
+      } else {
+        walletAddressDiv.textContent = 'Будь ласка, встановіть MetaMask.';
+      }
+    });
+  </script>
+</body>
+</html>
